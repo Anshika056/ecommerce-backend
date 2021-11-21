@@ -1,36 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const Category = require("../models/categorySchema");
-const slugify = require('slugify');
+const { addcategory , getcategory} = require('../controllers/category');
+//const {adminmiddleware} = require('../middleware/index');
+ require("../database/connect");
 
-router.post("/category/create",async (req,res) => {
-
-    try{
-    const newcategory = {
-        name: req.body.name,
-        slug: slugify(req.body.name)
-     } 
-
-     if(req.body.parentId){
-         newcategory.parentId = req.body.parentId;
-     }
-
-     const category = new Category(newcategory);
-     //console.log(category);
-     //console.log(newcategory);
-     
-     const cat = await category.save();
-
-     if(cat){
-          return res.status(201).json({message:'category added'});
-      }
-     else(error) => {
-         return res.status(400).json({error:"already exists"});
-    }
-}
-catch(err){
-    res.status(400).json({error:'something went wrong'})
-}
- });
+//router.post("/category/create",adminmiddleware,addcategory)
+router.post("/category/create",addcategory);
+router.get("/category/getcategory",getcategory);
 
 module.exports = router;
