@@ -55,7 +55,7 @@ exports.signin = async (req,res) => {
                 res.status(400).json({error:"Invalid password"});
               }
               else{
-                res.json({ message:"Admin login sucessfull"});
+                res.json({ message:"Admin login sucessfull",token});
                 }} else{
                res.status(400).json({error:"Invaild details"})
               }
