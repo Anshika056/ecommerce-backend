@@ -53,7 +53,7 @@ UserSchema.pre("save",async function(next){                   // to  bcrpty
 
 UserSchema.methods.generateAuthToken = async function(){
     try{
-         let token = jwt.sign({_id: this._id, },process.env.SECRET_KEY,{expiresIn: '1d'});   //generation of token 
+         let token = jwt.sign({_id: this._id},process.env.SECRET_KEY,{expiresIn: '1d'});   //generation of token 
          this.tokens = this.tokens.concat({token:token});
          await this.save();
          return token;

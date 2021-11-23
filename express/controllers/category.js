@@ -13,7 +13,7 @@ exports.addcategory = async (req,res) => {
          newcategory.parentId = req.body.parentId;
      }
 
-     const category = new Category(newcategory);
+     const category = new Category(newcategory);   
      console.log(category);
      console.log(newcategory);
      
