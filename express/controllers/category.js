@@ -49,3 +49,29 @@ catch(err){
     console.log(err);
   }
 }
+
+
+exports.deletecategory=async(req,res)=>{
+    try
+    {
+        const {id}=req.params;
+        //console.log(id)
+        const deleted = await Category.findByIdAndDelete(id)
+        console.log(deleted);
+        if(deleted)
+        {
+            res.send("data deleted")
+        }
+        else
+        {
+            res.status(400).json(("data not found"));
+
+        }
+
+    }
+    catch(err)
+    {
+        res.send("Something Wrong");
+        console.log(err)
+    }
+}
