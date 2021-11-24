@@ -1,11 +1,12 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/userSchema.js");
 exports.adminmiddleware = async (req, res, next) => {
+  console.log("colling")
   try {
     const userToken = req.headers.authorization;
     console.log(userToken);
     if (userToken == undefined) {
-      res.send("invalid user");
+      res.send("token is required");
     } else {
       const decodeData = await jwt.verify(userToken, process.env.SECRET_KEY);
       const { _id } = decodeData;
