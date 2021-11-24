@@ -3,6 +3,7 @@ const User = require("../models/userSchema.js");
 exports.adminmiddleware = async (req, res, next) => {
   try {
     const userToken = req.headers.authorization;
+    console.log(userToken);
     if (userToken == undefined) {
       res.send("invalid user");
     } else {

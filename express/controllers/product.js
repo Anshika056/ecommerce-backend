@@ -12,12 +12,13 @@ exports.uploadProduct=async(req,res)=>{
 
     const product = new Product(newProduct);          //create a product using productschema
     const prod = await product.save();
+    console.log(prod);
 
     if(prod){
         res.status(200).json({message:"added the product"});
     }
     else{
-        res.status(400).json({error:"something wrong"});
+        res.status(400).json({error:"error"});
     }
       
 
