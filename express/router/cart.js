@@ -1,10 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const { addCart} = require('../controllers/cart');
+const { addCart,removeToCart} = require('../controllers/cart');
 //const {adminmiddleware}=require("../middleware/index.js")
- require("../database/connect");
 
- router.post("/cart/add",addCart)
+
+
+ router.post("/cart/add",addCart);
+ router.delete("/cart/remove/:id",removeToCart)
 
 
 module.exports = router;

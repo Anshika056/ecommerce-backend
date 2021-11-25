@@ -4,7 +4,7 @@ exports.uploadProduct=async(req,res)=>{
 
     const newProduct= {
         name: req.body.name,
-        slug:req.body.slug,
+        slug: req.body.slug,
         quantity: req.body.quantity,
         price: req.body.price,
         description: req.body.description,
@@ -31,4 +31,41 @@ exports.uploadProduct=async(req,res)=>{
     res.status(400).json({err});
 }
 
+}
+
+exports.getProduct=async(req,res)=>{
+
+    const productfind =await Product.find({});
+    if(productfind){
+    res.send(productfind)
+    }
+    else
+    {
+        res.send("product not found")
+    }
+
+}
+
+exports.deleteProduct=async(req,res)=>{
+    try
+    {
+        const {id}=req.params
+        const productdelete = await product.findByIdAndDelete(id);
+        if(productdelete)
+        {
+            res.send("deleted")
+        }
+        else
+        {
+            res.send("product not found")
+        }
+        
+
+    }
+    catch(err)
+    {
+        console.log(err)
+        res.send("err")
+    }
+    
 }
