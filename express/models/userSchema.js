@@ -1,20 +1,27 @@
 const mongoose = require("mongoose");             //schema for signup 
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const validator=require("validator");
 const UserSchema = new mongoose.Schema({         //schema based on which data will be needed in mongo documents
-    name: {
+    username: {
         type: String,
         required: true,
         trim: true,
         min: 4,
         max: 20,
-        lowercase: true
+        lowercase: true,
+        unique:true
     },
     email: {
         type: String,
         required: true,
         trim: true,
-        unique: true
+        unique: true,
+        validate: (value) => {                             //validation the email
+            if (!validator.isEmail(value)) {
+              throw new Error("Invalid Email Address");
+            }
+          },
     },
     phone: {
         type: Number,
@@ -32,17 +39,11 @@ const UserSchema = new mongoose.Schema({         //schema based on which data wi
         type: String,
         enum: ['user','admin'],
         default:'user'
-    },
-    tokens: [
-        {
-        token:{
-            type:String,
-            required: true
-           }
-        }
-    ]
+    }
 },{timestamps: true});
 
+
+//hashing the password
 UserSchema.pre("save",async function(next){                   // to  bcrpty
     if(this.isModified('password')){
         this.password = await bcrypt.hash(this.password,12);
@@ -51,6 +52,8 @@ UserSchema.pre("save",async function(next){                   // to  bcrpty
     next();
 })
 
+
+//generate the token
 UserSchema.methods.generateAuthToken = async function(){
     try{
          let token = jwt.sign({_id: this._id},process.env.SECRET_KEY,{expiresIn: '1d'});   //generation of token 

@@ -11,7 +11,7 @@ const categoryschema = new mongoose.Schema({
         required: true,
         unique: true
     },
-    parentId: {
+    parentId: {                           //to create a sub categories for categories
         type: String
     }
 },
