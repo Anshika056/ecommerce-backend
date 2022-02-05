@@ -4,7 +4,7 @@ const { ObjectId } = mongoose.Schema
 
 const cartschema = new mongoose.Schema({
     userId:{
-        type:string,
+        type:String,
         required:true
     },
     products:[{

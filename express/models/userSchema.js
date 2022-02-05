@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");             //schema for signup 
-const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const validator=require("validator");
 const UserSchema = new mongoose.Schema({         //schema based on which data will be needed in mongo documents
@@ -31,26 +30,12 @@ const UserSchema = new mongoose.Schema({         //schema based on which data wi
         type:String,
         required: true
     },
-    confirmpassword: {
-        type:String,
-        required: true
-    },
     role:{
         type: String,
         enum: ['user','admin'],
         default:'user'
     }
 },{timestamps: true});
-
-
-//hashing the password
-UserSchema.pre("save",async function(next){                   // to  bcrpty
-    if(this.isModified('password')){
-        this.password = await bcrypt.hash(this.password,12);
-        this.confirmpassword = await bcrypt.hash(this.confirmpassword,12);
-    }
-    next();
-})
 
 
 //generate the token

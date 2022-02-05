@@ -26,7 +26,7 @@ const Cart = require('./models/cartSchema');
 const Order = require('./models/orderSchema');
 
 
-app.use('/api',userroutes);                                       //use of api prefix    
+app.use('/api/users',userroutes);                                       //use of api prefix    
 app.use('/api',categoryroutes);                                                   
 app.use('/api',adminroutes); 
 app.use('/api',productroutes); 
