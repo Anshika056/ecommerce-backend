@@ -2,7 +2,7 @@ const User = require("../models/userSchema");
 require("../database/connect");
 const { check, validationResult } = require("express-validator");
 const CryptoJS=require("crypto-js");
-
+const jwt = require("jsonwebtoken");
 
 
 //register a user
@@ -41,30 +41,36 @@ exports.signup =async (req,res) => {                  //to get the data(The data
 exports.login= async (req,res)=>{
  const errors = validationResult(req);                        //validation of the req.body to check any empty field
 
- if (!errors.isEmpty()) {
-   return res.status(422).json({
+if (!errors.isEmpty()) {
+     return res.status(422).json({
      error: errors.array()[0].msg
-   });
+       });
  }
 
-try{
-  const finduser = await User.findOne({email:req.body.email});
-   if(!finduser){
-       res.status(400).json("wrong credinatials!")
-   }
-  
-   const hashedPassword = CryptoJS.AES.decrypt(          //decrypt the encrypted password
-    finduser.password,
-    process.env.SECRET_KEY
-);
+  try{
+      const finduser = await User.findOne({email:req.body.email});
+         if(!finduser){
+             res.status(400).json("wrong credinatials!")
+        }
+   //decrypt the encrypted password
+        const hashedPassword = CryptoJS.AES.decrypt(         
+            finduser.password,
+            process.env.SECRET_KEY
+          );
 
 const userpassword = hashedPassword.toString(CryptoJS.enc.Utf8);       //convert it into the string to compare the password
 if(userpassword != req.body.password){
     res.status(401).json("wrong info entered!");
 }
+   
+const token = jwt.sign({                                        //generation of token
+  id:finduser._id
+ },process.env.SECRET_KEY, {expiresIn:"1d"})
 
-const { password, ...others } = finduser._doc;  
-res.status(200).json({...others});
+
+const { password, ...others } = finduser._doc;                  //send all details expect password in res
+
+res.status(200).json({...others,token});
 
 
 }catch(err){

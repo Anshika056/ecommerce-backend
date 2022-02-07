@@ -1,71 +1,74 @@
-const express = require('express');
 const User = require("../models/userSchema");
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcryptjs");
 require("../database/connect");
+const CryptoJS=require("crypto-js");
 
-exports.signup = async (req,res) => {                  //to get the data(The data sent to the server with POST is stored in the request body of the HTTP request:)
-    const {name, email , phone , password, confirmpassword } = req.body; //object destructing
-   
-    if(!name|| !email || !phone || !password || !confirmpassword){       // to check if all details are filled
-     return res.status(422).json({error:"Enter all details"});
-    }
-   
+//update user
+exports.update = async (req,res) =>{
+    if (req.body.password) {
+        req.body.password = CryptoJS.AES.encrypt(
+          req.body.password,
+          process.env.SECRET_KEY
+        ).toString();
+      }
     try{
-         const userexists = await User.findOne({email:email})    // check if email already exists in database
-                                   
-           if(userexists){
-                 return res.status(422).json({error:"user already exists"});
-             }else if(password != confirmpassword){
-                 return res.status.json({error:"password are not same"});
-             }
-     
-          const user = new User({name, email , phone , password, confirmpassword});        // new data filled will be saved in user
-         
-          const signup = await user.save();
-         if(signup){
-           res.status(201).json({message:"User Registation sucessful"});                     // if data is saved to the  mongo then this will happen
-         }
-   
-       }catch (err){
-         console.log(err);
-       }
-    };
-   
-exports.signin = async (req,res) => {
-       
-        try{
-           let token;
-          const {email , password} = req.body;             //object destruction
-      
-          if(!email || !password){
-            return res.status(400).json({error:"please fill the details"});
-          }
-            const signinuser = await User.findOne({email:email});
-           // console.log(loginuser);
-      
-            if(signinuser){
-              const loginpass = await bcrypt.compare(password, signinuser.password);
-      
-               token = await signinuser.generateAuthToken();
-              //console.log(token);
-      
-              if(!loginpass)
-              {
-                res.status(400).json({error:"Invalid password"});
-              }
-              else{
-                res.json({ message:"user login sucessfull"});
-                }}
-              else{
-               res.status(400).json({error:"Invaild details"})
-              }
-                   
-           
-      
-        }
-        catch(err){
-           console.log(err);
-        }
-      };
-      
+      const updateduser  = await User.findByIdAndUpdate(
+        req.params.id,
+        {$set:req.body,}
+       , { new: true }
+       ); 
+      if(updateduser){
+      res.status(200).json(updateduser);
+      console.log(updateduser);
+      }
+    }
+    catch(err){
+       res.status(400).json(err);
+       console.log(err);
+    }   
+
+}
+
+
+//delete the user 
+exports.deleteuser = async(req,res)=>{
+  try{
+  const deleteduser = await User.findByIdAndDelete(req.params.id);
+  if(deleteduser){
+    res.status(200).json("user has been deleted");
+    console.log(deleteduser);
+  }
+}catch(err){
+  res.status(400).json(err);
+  console.log(err);
+}
+}
+
+
+//get user by id
+exports.getuserbyid = async (req,res)=>{
+  try{
+    const getuser = await User.findById(req.params.id);
+    if(getuser){
+      const{password,...others} = getuser._doc;
+      res.status(200).json(others);
+    }
+
+  }catch(err){
+      res.status(400).json(err);
+      console.log(err);
+  }
+}
+
+
+//get all users
+exports.getusers = async (req,res)=>{
+  const query = req.query.new;                                  //setting query of getting new users
+  try {
+    const users = query                                         //if there is any query then the down conditions will run
+      ? await User.find().sort({ _id: -1 }).limit(5)           //if the user wants only new user in db we set limit and sort in descending order
+      : await User.find();
+    res.status(200).json(users);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+}

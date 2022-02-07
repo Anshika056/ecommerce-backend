@@ -8,10 +8,10 @@ dotenv.config({path:'./config.env'});
 const PORT = process.env.PORT;
 require("./database/connect");                                  // linking the database to app 
 
-const userroutes = (require("./router/auth"));
-const adminroutes = (require("./router/admin/auth"));
-const categoryroutes = (require("./router/category"));
-const productroutes = (require("./router/product"));
+const authroutes = (require("./router/auth"));
+const userroutes = (require("./router/user"));
+// const categoryroutes = (require("./router/category"));
+// const productroutes = (require("./router/product"));
 const cartroutes = (require("./router/cart"));
 const orderroutes = (require("./router/order"));
 
@@ -27,9 +27,9 @@ const Order = require('./models/orderSchema');
 
 
 app.use('/api/users',userroutes);                                       //use of api prefix    
-app.use('/api',categoryroutes);                                                   
-app.use('/api',adminroutes); 
-app.use('/api',productroutes); 
+// app.use('/api',categoryroutes);                                                   
+app.use('/api/users',authroutes); 
+// app.use('/api',productroutes); 
 app.use('/api',cartroutes); 
 app.use('/api',orderroutes); 
 
