@@ -22,13 +22,13 @@ exports.update = async (req,res) =>{
       }
     }
     catch(err){
-       res.status(400).json(err);
+       res. status(400).json(err);
        console.log(err);
     }   
 
 }
 
-
+ 
 //delete the user 
 exports.deleteuser = async(req,res)=>{
   try{
@@ -64,11 +64,11 @@ exports.getuserbyid = async (req,res)=>{
 exports.getusers = async (req,res)=>{
   const query = req.query.new;                                  //setting query of getting new users
   try {
-    const users = query                                         //if there is any query then the down conditions will run
-      ? await User.find().sort({ _id: -1 }).limit(5)           //if the user wants only new user in db we set limit and sort in descending order
+    const users = query                                          //if there is any query then the down conditions will run
+      ? await User.find().sort({ _id: -1 }).limit(5)             //if the user wants only new user in db we set limit and sort in descending order
       : await User.find();
     res.status(200).json(users);
   } catch (err) {
-    res.status(500).json(err);
+    return res.status(500).json(err);
   }
 }

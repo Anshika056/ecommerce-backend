@@ -23,15 +23,14 @@ const productSchema=new mongoose.Schema({
         type:String,
         required:true
     },
-    categories:{
+    category:{
         // type:String,
         // required:true
       type: ObjectId,
       ref: "Category"
-      },
-      img:{
-         type: String, 
-         required: true 
+    },
+     photo:{
+         type:String
         },   
 
 },{timestamps:true} );
