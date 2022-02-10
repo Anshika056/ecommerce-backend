@@ -11,7 +11,7 @@ const verifytoken = (req,res,next)=>{
           }
            req.user = user;                        //will check if the user requested is similar to the user got
            next();
-           console.log(verifieduser);
+           console.log(user);
         })
  }
  }catch(err){
@@ -19,24 +19,20 @@ const verifytoken = (req,res,next)=>{
  }
 }
 
-const verifyuserandauth = (req,res,next) =>{
-   verifytoken(req,res,()=>{
-    console.log("sk");
-    //const {role} = req.user.role  || (role ="admin")
-      if(req.user.id === req.params.id){
-      console.log("skjjj");
-       next();
-     }else{
-       res.status(401).json("you are not allowed to do anything to other's account");
-     }
-   })
- 
-}
-
-const verifyadminandauth = (req, res, next) => {
+const verifyuserandauth = (req, res, next) => {
   verifytoken(req, res, () => {
-    const {role} = req.user.role
-    if (role="admin") {
+    if (req.user.id === req.params.id || req.user.isAdmin) {
+      next();
+    } else {
+      res.status(403).json("You are not allowed to do that!");
+    }
+  });
+};
+
+
+const verifyadminandauth =  (req, res, next) => {
+  verifytoken(req, res, () => {
+    if (req.user.isAdmin){
       next();
     } else {
       res.status(403).json("You are not alowed to do that!");

@@ -68,6 +68,7 @@ const token = jwt.sign({                                        //generation of 
  },process.env.SECRET_KEY, {expiresIn:"1d"})
 
 
+ 
 const { password, ...others } = finduser._doc;                  //send all details expect password in res
 
 res.status(200).json({...others,token});

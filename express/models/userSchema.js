@@ -29,10 +29,10 @@ const UserSchema = new mongoose.Schema({         //schema based on which data wi
         type:String,
         required: true
     },
-    role:{
-         type: String,
-         required:true
-    }
+    isAdmin: {
+         type:Boolean,
+         default:false,
+    },
 },{timestamps: true});
 
 
