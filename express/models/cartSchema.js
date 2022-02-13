@@ -7,16 +7,15 @@ const cartschema = new mongoose.Schema({
         type:String,
         required:true
     },
-    products:[{
-        productId:{
-            type: ObjectId,
-            ref: "Product"
-        },
-        quantity:{
-            type:Number,
-            default:1
-        }
-    }]
+    productId:{
+       type: ObjectId,
+       ref: "Product"
+    },
+     quantity:{
+        type:Number,
+        default:1
+    }
+
 },{timestamps:true});
 
 const Cart = new mongoose.model('CART',cartschema );        //new collection created based on schema

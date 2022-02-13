@@ -1,5 +1,6 @@
 const Category = require("../models/categorySchema");
 const slugify = require('slugify');
+const Product = require("../models/productSchema");
 require("../database/connect");
 
 //add category
@@ -97,3 +98,4 @@ exports.deletecategory=async(req,res)=>{
         console.log(err)
     }
 }
+

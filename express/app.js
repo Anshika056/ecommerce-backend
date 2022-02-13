@@ -11,7 +11,8 @@ require("./database/connect");                                  // linking the d
 const authroutes = (require("./router/auth"));
 const userroutes = (require("./router/user"));
 const categoryroutes = (require("./router/category"));
-//const cartroutes = (require("./router/cart"));
+const productsroutes = (require("./router/product"));
+const cartroutes = (require("./router/cart"));
 //const orderroutes = (require("./router/order"));
 
 app.use(express.json());                                        //to understand the json format in connect(middleaware) converts the data into the object
@@ -22,13 +23,14 @@ const User = require('./models/userSchema');                     // import mongo
 const Category = require('./models/categorySchema');
 const Cart = require('./models/cartSchema');
 const Order = require('./models/orderSchema');
+const Product = require("./models/productSchema");
 
 
 app.use('/api/users',userroutes);                                       //use of api prefix    
  app.use('/api',categoryroutes);                                                   
 app.use('/api/users',authroutes);  
-// app.use('/api',cartroutes); 
-//app.use('/api',orderroutes); 
+app.use('/api/product',productsroutes); 
+app.use('/api/cart',cartroutes); 
 
 
 app.listen(PORT,() => {

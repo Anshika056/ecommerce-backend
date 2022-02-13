@@ -18,5 +18,5 @@ const categoryschema = new mongoose.Schema({
 {timestamps: true});
 
 
-const Category = new mongoose.model('CATEGORY', categoryschema);        //new collection created based on schema
+const Category = new mongoose.model('Category', categoryschema);        //new collection created based on schema
 module.exports = Category;

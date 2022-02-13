@@ -6,10 +6,8 @@ const productSchema=new mongoose.Schema({
         type:String,
         required:true,
         trim: true,
-        maxlength: 32
-    },
-    slug:{
-        type:String
+        maxlength: 5,
+        unique:true
     },
     quantity:{
         type:Number,
@@ -19,7 +17,7 @@ const productSchema=new mongoose.Schema({
         type:Number,
         required:true
     },
-    description:{
+    desc:{
         type:String,
         required:true
     },
@@ -30,7 +28,8 @@ const productSchema=new mongoose.Schema({
       ref: "Category"
     },
      photo:{
-         type:String
+         type:Buffer,
+         contentType:String,
         },   
 
 },{timestamps:true} );
