@@ -20,6 +20,7 @@ exports.signup =async (req,res) => {                  //to get the data(The data
            username:req.body.username,
            email:req.body.email, 
            phone:req.body.phone, 
+           isAdmin:req.body.isAdmin,
            password:CryptoJS.AES.encrypt(                            //hashing the password using the crypto dep
                 req.body.password,
                 process.env.SECRET_KEY
@@ -64,7 +65,8 @@ if(userpassword != req.body.password){
 }
    
 const token = jwt.sign({                                        //generation of token
-  id:finduser._id
+  id:finduser._id,
+  isAdmin:finduser.isAdmin,
  },process.env.SECRET_KEY, {expiresIn:"1d"})
 
 

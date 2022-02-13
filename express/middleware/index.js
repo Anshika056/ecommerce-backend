@@ -4,14 +4,14 @@ const verifytoken = (req,res,next)=>{
  const authtoken = req.headers.authorization
  try{
  if(authtoken){
-  console.log("bts");
+  //console.log("bts");
         const verifieduser = jwt.verify(authtoken,process.env.SECRET_KEY,(err,user)=>{
           if(err){
            return res.status(403).json("Token is not valid!");
           }
-           req.user = user;                        //will check if the user requested is similar to the user got
+           req.user = user;                        //will check if the user requested is similar to the user got and will get user id
            next();
-           console.log(user);
+           console.log(user.isAdmin);
         })
  }
  }catch(err){
@@ -35,7 +35,7 @@ const verifyadminandauth =  (req, res, next) => {
     if (req.user.isAdmin){
       next();
     } else {
-      res.status(403).json("You are not alowed to do that!");
+      res.status(403).json("You are not allowed to do that!");
     }
   });
 };
