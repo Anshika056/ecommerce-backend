@@ -13,7 +13,7 @@ const userroutes = (require("./router/user"));
 const categoryroutes = (require("./router/category"));
 const productsroutes = (require("./router/product"));
 const cartroutes = (require("./router/cart"));
-//const orderroutes = (require("./router/order"));
+const orderroutes = (require("./router/order"));
 
 app.use(express.json());                                        //to understand the json format in connect(middleaware) converts the data into the object
 app.use(express.urlencoded({ extended: true }));
@@ -31,6 +31,7 @@ app.use('/api/users',userroutes);                                       //use of
 app.use('/api/users',authroutes);  
 app.use('/api/product',productsroutes); 
 app.use('/api/cart',cartroutes); 
+app.use('/api/order',orderroutes);
 
 
 app.listen(PORT,() => {
