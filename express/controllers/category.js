@@ -1,6 +1,8 @@
 const Category = require("../models/categorySchema");
 const slugify = require('slugify');
 require("../database/connect");
+
+//add category
 exports.addcategory = async (req,res) => {
 
     try{
@@ -9,7 +11,7 @@ exports.addcategory = async (req,res) => {
         slug: slugify(req.body.name)
      } 
 
-     if(req.body.parentId){
+     if(req.body.parentId){                           //to create a subcategory
          newcategory.parentId = req.body.parentId;
      }
 
@@ -32,6 +34,7 @@ catch(err){
  };
 
 
+ //get category
  exports.getcategory = async (req,res) =>{
 
     try{
@@ -50,7 +53,28 @@ catch(err){
   }
 }
 
+//update categories
+exports.updatecat= async (req,res)=>{
+    try{
+   const updated = await Category.findByIdAndUpdate(
+       req.params.id,
+       {
+           $set:req.body,
+       },
+       {
+           new:true
+       }
+       
+   )    
+   res.status(200).send(updated)
+   console.log(updated);
+    }catch(err){
+        res.send(500).send(err)
+        console.log(err);
+    }
+}
 
+//delete category   
 exports.deletecategory=async(req,res)=>{
     try
     {
@@ -60,14 +84,12 @@ exports.deletecategory=async(req,res)=>{
         console.log(deleted);
         if(deleted)
         {
-            res.send("data deleted")
+            res.status(200).json("category deleted")
         }
         else
         {
             res.status(400).json(("data not found"));
-
         }
-
     }
     catch(err)
     {
