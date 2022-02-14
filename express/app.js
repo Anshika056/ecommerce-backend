@@ -32,7 +32,7 @@ const Product = require("./models/productSchema");
 
  
 app.use('/api/users',userroutes);                                       //use of api prefix    
-app.use('/api',categoryroutes);                                                   
+app.use('/api/category',categoryroutes);                                                   
 app.use('/api/users',authroutes);  
 app.use('/api/product',productsroutes); 
 app.use('/api/cart',cartroutes); 

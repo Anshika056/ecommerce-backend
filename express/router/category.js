@@ -4,11 +4,11 @@ const { verifyadminandauth, verifyuserandauth, verifytoken } = require('../middl
 const router = express.Router();
  require("../database/connect");
 
-router.post("/category/create",verifyadminandauth,addcategory);
+router.post("/create",verifyadminandauth,addcategory);
 
-router.get("/category/get",verifyuserandauth,getcategory);
+router.get("/get",verifyuserandauth,getcategory);
 
-router.put("/category/update/:id",verifyadminandauth,updatecat);
+router.put("/update/:id",verifyadminandauth,updatecat);
 
-router.delete("/category/delete/:id",verifyadminandauth,deletecategory);
+router.delete("/delete/:id",verifyadminandauth,deletecategory);
 module.exports = router;
